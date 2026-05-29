@@ -4,6 +4,7 @@ import com.pricepulse.entity.PriceAlert;
 import com.pricepulse.entity.Product;
 import com.pricepulse.repository.PriceAlertRepository;
 import com.pricepulse.repository.ProductRepository;
+import com.pricepulse.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -17,6 +18,7 @@ public class PriceScheduler {
 
     private final PriceAlertRepository priceAlertRepository;
     private final ProductRepository productRepository;
+    private final EmailService emailService;
 
     // Runs every 3 hours
     @Scheduled(fixedRate = 10000)
@@ -42,11 +44,19 @@ public class PriceScheduler {
 
             for (PriceAlert alert : alerts) {
                 if (newPrice <= alert.getTargetPrice()) {
-                    log.info("Price drop detected! Alerting user: {}",
+                    log.info("Price drop detected! Alerting: {}",
                             alert.getUser().getEmail());
+
+                    // Send actual email now!
+                    emailService.sendPriceDropAlert(
+                            alert.getUser().getEmail(),
+                            product.getName(),
+                            alert.getTargetPrice(),
+                            newPrice
+                    );
+
                     alert.setIsTriggered(true);
                     priceAlertRepository.save(alert);
-                    // Email notification will be added next
                 }
             }
         }
