@@ -29,7 +29,8 @@ public class PriceScheduler {
         List<Product> products = productRepository.findAll();
 
         for (Product product : products) {
-            .roduct.getCurrentPrice());
+            Double newPrice = priceUpdateStrategy
+                    .updatePrice(product.getCurrentPrice());
             product.setCurrentPrice(newPrice);
             productRepository.save(product);
 
