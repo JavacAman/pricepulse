@@ -1,1 +1,74 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <nav class="navbar">
+    <h1>PricePulse</h1>
+    <div class="nav-right">
+      <span>Welcome, {{ userName }}!</span>
+      <button type="button" (click)="logout()">Logout</button>
+    </div>
+  </nav>
+
+  <!-- Modal: Add Product -->
+  <div *ngIf="showAddProduct" class="modal-overlay">
+    <div class="modal-card">
+      <h3>Add New Product</h3>
+      <input placeholder="Product Name" [(ngModel)]="newProduct.name"/>
+      <input placeholder="Category" [(ngModel)]="newProduct.category"/>
+      <input type="number" placeholder="Current Price" [(ngModel)]="newProduct.currentPrice"/>
+      <input placeholder="Image URL (optional)" [(ngModel)]="newProduct.imageUrl"/>
+      <p *ngIf="formError" class="form-error">{{ formError }}</p>
+      <div class="modal-actions">
+        <button type="button" (click)="addProduct()">Save Product</button>
+        <button type="button" class="btn-cancel" (click)="closeProductModal()">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Set Alert -->
+  <div *ngIf="showAddAlert" class="modal-overlay">
+    <div class="modal-card">
+      <h3>Set Price Alert</h3>
+      <input type="number" placeholder="Target Price" [(ngModel)]="targetPrice"/>
+      <div class="modal-actions">
+        <button type="button" (click)="createAlert()">Create Alert</button>
+        <button type="button" class="btn-cancel" (click)="showAddAlert = false">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="section-header">
+      <h2>Products</h2>
+      <button type="button" (click)="showAddProduct = true">+ Add Product</button>
+    </div>
+
+    <p *ngIf="loadError" class="load-error">{{ loadError }}</p>
+
+    <p *ngIf="!loading && products.length === 0 && !loadError" class="empty-state">
+      No products yet. Click "+ Add Product" to add one.
+    </p>
+
+    <div class="products-grid">
+      <div *ngFor="let product of products" class="product-card">
+        <h3>{{ product.name }}</h3>
+        <p class="category">{{ product.category }}</p>
+        <p class="price">&#8377;{{ product.currentPrice }}</p>
+        <button type="button" (click)="setAlert(product.id)">Set Alert</button>
+      </div>
+    </div>
+
+    <div class="section-header">
+      <h2>My Alerts</h2>
+    </div>
+
+    <div class="alerts-list">
+      <div *ngFor="let alert of alerts" class="alert-card">
+        <p><strong>{{ alert.product.name }}</strong></p>
+        <p>Target: &#8377;{{ alert.targetPrice }}</p>
+        <p>Current: &#8377;{{ alert.product.currentPrice }}</p>
+        <span [class]="alert.triggered ? 'triggered' : 'active'">
+          {{ alert.triggered ? 'Triggered' : 'Active' }}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
