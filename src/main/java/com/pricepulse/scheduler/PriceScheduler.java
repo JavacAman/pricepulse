@@ -22,7 +22,7 @@ public class PriceScheduler {
     private final EmailService emailService;
     private final PriceUpdateStrategy priceUpdateStrategy;
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 100000)
     public void checkPriceDrops() {
         log.info("Running price drop check...");
 
