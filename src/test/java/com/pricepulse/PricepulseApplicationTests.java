@@ -1,18 +1,15 @@
 package com.pricepulse;
 
+import com.pricepulse.config.TestMailConfig;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.context.annotation.Import;
 
 @SpringBootTest
+@Import(TestMailConfig.class)
 class PricepulseApplicationTests {
 
-	@MockitoBean
-	JavaMailSender mailSender;
-
-	@Test
-	void contextLoads() {
-	}
-
+    @Test
+    void contextLoads() {
+    }
 }
