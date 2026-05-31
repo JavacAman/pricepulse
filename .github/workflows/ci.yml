@@ -36,5 +36,9 @@ jobs:
       - name: Run Tests
         run: ./mvnw test -e
 
+      - name: Print test failure report
+        if: failure()
+        run: cat target/surefire-reports/*.txt 2>/dev/null || cat target/surefire-reports/*.xml 2>/dev/null || echo "No surefire reports found"
+
       - name: Build Docker image
         run: docker build -t pricepulse .
