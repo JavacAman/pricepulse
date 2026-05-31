@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-register',
+
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register.html',
@@ -31,7 +32,7 @@ export class Register {
       next: (res: any) => {
         localStorage.setItem('token', res.token);
         localStorage.setItem('name', res.name);
-        localStorage.setItem('userId', res.userId);
+        localStorage.setItem('userId', String(res.userId));
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {
