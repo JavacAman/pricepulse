@@ -9,6 +9,25 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * ============================================================
+ * SOLID PRINCIPLE: Single Responsibility Principle (SRP)
+ * SOLID PRINCIPLE: Dependency Inversion Principle (DIP)
+ * ============================================================
+ *
+ * SRP:
+ *   AuthController's ONLY job: handle HTTP routing for auth endpoints.
+ *   It does NOT contain registration logic, password hashing, or token
+ *   generation — all of that lives in AuthService (separate responsibility).
+ *   If the HTTP layer changes (e.g., add request logging, rate limiting)
+ *   → only this class changes. If auth logic changes → only AuthService changes.
+ *
+ * DIP:
+ *   This controller depends on AuthService (a service-layer abstraction),
+ *   not on UserRepository, PasswordEncoder, or JwtUtil directly.
+ *   Controller (high-level) → AuthService (abstraction) → lower-level details.
+ * ============================================================
+ */
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

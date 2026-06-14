@@ -7,6 +7,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+/**
+ * ============================================================
+ * SOLID PRINCIPLE: Single Responsibility Principle (SRP)
+ * SOLID PRINCIPLE: Dependency Inversion Principle (DIP)
+ * ============================================================
+ *
+ * SRP:
+ *   PriceAlertController's ONLY job: handle HTTP routing for price alerts.
+ *   Creating the alert, validating user/product, sending notifications —
+ *   none of that happens here. It all lives in PriceAlertService and
+ *   downstream components (separate, focused responsibilities).
+ *
+ * DIP:
+ *   Depends on PriceAlertService (service layer), not on repositories
+ *   or EmailService directly. The controller sits at the top of the
+ *   dependency chain, relying on abstractions below it.
+ * ============================================================
+ */
 @RestController
 @RequestMapping("/api/alerts")
 @RequiredArgsConstructor
